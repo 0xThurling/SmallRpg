@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 const MAX_SPEED = 9000
-const ACCELERATION = 1000
-const FRICTION = 1000
+const ACCELERATION = 9000
+const FRICTION = 1500
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
