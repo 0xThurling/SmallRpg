@@ -1,6 +1,8 @@
 extends CharacterBody2D
 
-var playerVelocity = Vector2.ZERO
+const MAX_SPEED = 9000
+const ACCELERATION = 1000
+const FRICTION = 1000
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -10,10 +12,12 @@ func _physics_process(delta):
 	var input_vector = Vector2.ZERO
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
-		
-	if input_vector != Vector2.ZERO:
-		playerVelocity = input_vector
-	else:
-		playerVelocity = Vector2.ZERO
+	input_vector = input_vector.normalized()
 	
-	move_and_collide(playerVelocity)
+	if input_vector != Vector2.ZERO:
+		velocity += input_vector * ACCELERATION * delta
+		velocity = velocity.limit_length(MAX_SPEED * delta)
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, delta * FRICTION)
+	
+	move_and_slide()
