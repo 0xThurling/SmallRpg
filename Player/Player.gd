@@ -1,8 +1,10 @@
 extends CharacterBody2D
 
-const MAX_SPEED = 9000
-const ACCELERATION = 9000
+const MAX_SPEED = 120
+const ACCELERATION = 3500
 const FRICTION = 1500
+
+@onready var animation_player = $AnimationPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -15,9 +17,14 @@ func _physics_process(delta):
 	input_vector = input_vector.normalized()
 	
 	if input_vector != Vector2.ZERO:
-		velocity += input_vector * ACCELERATION * delta
-		velocity = velocity.limit_length(MAX_SPEED * delta)
+		if input_vector.x > 0:
+			animation_player.play("run_right")
+		else:
+			animation_player.play("run_left")
+		
+		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
 	else:
+		animation_player.play("idle_right")
 		velocity = velocity.move_toward(Vector2.ZERO, delta * FRICTION)
 	
 	move_and_slide()
