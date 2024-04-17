@@ -3,6 +3,7 @@ extends CharacterBody2D
 @onready var stats = $Stats
 @onready var playerDetectionZone = $PlayerDetectionZone
 @onready var sprite = $BatBody
+@onready var hurtbox = $Hurtbox
 
 @export var ACCELERATION = 250
 @export var MAX_SPEED = 40
@@ -49,6 +50,7 @@ func _on_hurtbox_area_entered(area):
 	stats.health -= area.damage
 	var direction = (position - area.owner.position).normalized()
 	velocity = direction * 150
+	hurtbox.create_hit_effect()
 
 func _on_stats_no_health():
 	queue_free()
