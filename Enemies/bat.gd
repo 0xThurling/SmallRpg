@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var playerDetectionZone = $PlayerDetectionZone
 @onready var sprite = $BatBody
 @onready var hurtbox = $Hurtbox
+@onready var softCollision = $SoftCollision
 
 @export var ACCELERATION = 250
 @export var MAX_SPEED = 40
@@ -38,7 +39,8 @@ func _physics_process(delta):
 				state = IDLE
 			
 			sprite.flip_h = velocity.x < 0
-	
+	if softCollision.is_colliding():
+		velocity += softCollision.get_push_vector() * delta * 400
 	move_and_slide()
 
 func seek_player():

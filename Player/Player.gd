@@ -15,6 +15,8 @@ var state = MOVE
 var roll_vector = Vector2.DOWN
 var stats = PlayerStats
 
+const PlayerHurtSound = preload("res://player_hurt_sound.tscn")
+
 @onready var animation_player = $AnimationPlayer
 @onready var animation_tree = $AnimationTree
 @onready var animation_state = animation_tree.get("parameters/playback")
@@ -80,3 +82,5 @@ func _on_hurtbox_area_entered(area):
 	stats.health -= 1
 	hurtbox.start_invincibility(0.5)
 	hurtbox.create_hit_effect()
+	var player_hurt_sound = PlayerHurtSound.instantiate()
+	get_tree().current_scene.add_child(player_hurt_sound)
